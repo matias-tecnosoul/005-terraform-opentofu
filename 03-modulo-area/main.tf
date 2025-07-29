@@ -1,9 +1,9 @@
 module "area" {
   source = "./modules/area"
-  height = 5
-  width  = 4
+  height = var.height
+  width  = var.width
 }
 
-output "descripcion" {
-  value = "El área de un 5x4 es ${module.area.area}"
+output "resultado" {
+  value = "El área de un ${var.height} * ${var.width} es ${module.area.area}"
 }
