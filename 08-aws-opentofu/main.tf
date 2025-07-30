@@ -170,7 +170,6 @@ resource "aws_instance" "web" {
               dnf install -y httpd
               systemctl start httpd
               systemctl enable httpd
-              echo "<h1>¡Hola desde Mikroways!</h1><p>Servidor creado con OpenTofu</p>" > /var/www/html/index.html
               EOF
 
   tags = {
@@ -180,6 +179,11 @@ resource "aws_instance" "web" {
 }
 
 # Outputs
+output "instance_public_ip" {
+  description = "Public IP address of the EC2 instance"
+  value       = aws_instance.web.public_ip
+}
+
 output "vpc_id" {
   description = "ID of the VPC"
   value       = aws_vpc.main.id
@@ -188,14 +192,4 @@ output "vpc_id" {
 output "subnet_ids" {
   description = "IDs of the public subnets"
   value       = aws_subnet.public[*].id
-}
-
-output "instance_public_ip" {
-  description = "Public IP address of the EC2 instance"
-  value       = aws_instance.web.public_ip
-}
-
-output "instance_public_dns" {
-  description = "Public DNS name of the EC2 instance"
-  value       = aws_instance.web.public_dns
 }
