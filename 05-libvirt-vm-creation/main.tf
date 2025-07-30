@@ -8,9 +8,18 @@ terraform {
   required_version = "~> 1.10.0"
 }
 
-# Configurar el provider libvirt
+# Configurar el provider libvirt para tu configuración actual
 provider "libvirt" {
-  uri = "qemu:///system"
+  uri = "qemu:///session"  # o eliminar esta línea para usar default del sistema
+}
+
+# Crear el pool en la ubicación que ya usas
+resource "libvirt_pool" "default" {
+  name = "default"
+  type = "dir"
+  target {
+    path = "/mnt/datos1/00-Soft/libvirt/images"
+  }
 }
 
 variable "root_pass" {
@@ -25,7 +34,7 @@ variable "ubuntu_cloudimg" {
 
 resource "libvirt_volume" "ubuntu-2404_cloudimage" {
   name = "ubuntu2404-tpl.qcow2"
-  pool = "default"
+  pool = libvirt_pool.default.name
   source = var.ubuntu_cloudimg
   format = "qcow2"
 }
