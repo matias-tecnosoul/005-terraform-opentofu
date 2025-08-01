@@ -102,6 +102,7 @@ resource "libvirt_domain" "vm" {
   name   = var.hostname
   memory = var.memory_mb
   vcpu   = var.vcpu
+  type = "qemu"
 
   cloudinit = libvirt_cloudinit_disk.commoninit.id
 
